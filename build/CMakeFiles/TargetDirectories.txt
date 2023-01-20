@@ -1,0 +1,4 @@
+/home/falvojr/Git/ann-dio-careers/build/CMakeFiles/api.dir
+/home/falvojr/Git/ann-dio-careers/build/CMakeFiles/aws-lambda-package-api.dir
+/home/falvojr/Git/ann-dio-careers/build/CMakeFiles/edit_cache.dir
+/home/falvojr/Git/ann-dio-careers/build/CMakeFiles/rebuild_cache.dir
