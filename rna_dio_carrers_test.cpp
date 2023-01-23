@@ -1,13 +1,8 @@
 #include <string>
 #include <vector>
 #include <iostream>
-#include <aws/lambda-runtime/runtime.h>
-#include <aws/core/utils/json/JsonSerializer.h>
-#include <aws/core/utils/memory/stl/SimpleStringStream.h>
 
 using namespace std;
-using namespace aws::lambda_runtime;
-using namespace Aws::Utils::Json;
 
 #define NUM_INPUTS 16
 #define NUM_OUTPUTS 11
@@ -252,95 +247,44 @@ int run_ann_dio_careers(string input) {
 	return calculate_sgn();
 }
 
-invocation_response create_success_response(int carrerId, string carrerName) {
-
-    JsonValue carrer, resp;
-    carrer.WithInteger("id", carrerId).WithString("name", carrerName);
-    resp.WithInteger("status", 200).WithObject("carrer", carrer);
-
-    return invocation_response::success(resp.View().WriteCompact(), "application/json");
-}
-
-invocation_response create_error_response(string message) {
-
-    JsonValue resp;
-    resp.WithInteger("status", 400).WithString("message", message);
-    
-    return invocation_response::success(resp.View().WriteCompact(), "application/json");
-}
-
-invocation_response dio_handler(invocation_request const& request) {
-
-    JsonValue json(request.payload);
-    if (!json.WasParseSuccessful()) {
-        return invocation_response::failure("Failed to parse input JSON", "InvalidJSON");
-    }
-
-    auto v = json.View();
-
-    if (v.ValueExists("body") && v.GetObject("body").IsString()) {
-        auto body = v.GetString("body");
-        JsonValue body_json(body);
-
-        if (body_json.WasParseSuccessful()) {            
-            auto body_v = body_json.View();
-            bool hasInput = body_v.ValueExists("answers") && body_v.GetObject("answers").IsString();
-            string careerSurveyAnswers = hasInput ? body_v.GetString("answers") : "";
-            
-            if (careerSurveyAnswers.size() == NUM_INPUTS) {
-
-                int carrerIndex = run_ann_dio_careers(careerSurveyAnswers);
-                string carrerName;
-                switch (carrerIndex) {
-                    case 1:
-                        carrerName = "Carreira Back-end";
-                        break;
-                    case 2:
-                        carrerName = "Carreira Front-end";
-                        break;
-                    case 3:
-                        carrerName = "Carreira Mobile";
-                        break;
-                    case 4:
-                        carrerName = "Carreira Infra, DevOps e Security";
-                        break;
-                    case 5:
-                        carrerName = "Carreira Cloud";
-                        break;
-                    case 6:
-                        carrerName = "Carreira Data e Analytics";
-                        break;
-                    case 7:
-                        carrerName = "Carreira Games";
-                        break;
-                    case 8:
-                        carrerName = "Carreira Qualidade de Software";
-                        break;
-                    case 9:
-                        carrerName = "Carreira Web3 e IA";
-                        break;
-                    case 10:
-                        carrerName = "Carreira Liderança e SoftSkill";
-                        break;
-                    case 11:
-                        carrerName = "Carreira CRM";
-                        break;
-                    default:
-						cout << "[ANN_DIO_CARRERS]: Carrer Match Warning - " << careerSurveyAnswers;
-                        return create_error_response("Não identificamos uma carreira ideal pra você. Responda novamente deixando suas preferências mais claras 😉");
-                }
-                return create_success_response(carrerIndex, carrerName);
-            } else {
-                Aws::SimpleStringStream ss;
-                ss << "Número de entradas inválido, " << NUM_INPUTS << " posições são necessárias.";
-                return create_error_response(ss.str());
-            }
-        }
-    }
-    return create_error_response("Requisição inválida, confira os dados enviados.");
-}
-
 int main() {
-    run_handler(dio_handler);
+    int carrerIndex = run_ann_dio_careers("1134512341111555");
+    switch (carrerIndex) {
+        case 1:
+            cout << "[OK] Carreira Back-end";
+            break;
+        case 2:
+            cout << "[OK] Carreira Front-end";
+            break;
+        case 3:
+            cout << "[OK] Carreira Mobile";
+            break;
+        case 4:
+            cout << "[OK] Carreira Infra, DevOps e Security";
+            break;
+        case 5:
+            cout << "[OK] Carreira Cloud";
+            break;
+        case 6:
+            cout << "[OK] Carreira Data e Analytics";
+            break;
+        case 7:
+            cout << "[OK] Carreira Games";
+            break;
+        case 8:
+            cout << "[OK] Carreira Qualidade de Software";
+            break;
+        case 9:
+            cout << "[OK] Carreira Web3 e IA";
+            break;
+        case 10:
+            cout << "[OK] Carreira Lideranca e SoftSkill";
+            break;
+        case 11:
+            cout << "[OK] Carreira CRM";
+            break;
+        default:
+            cout << "[ERRO] Carreira Nao Encontrada :'(";
+    }
     return 0;
 }
