@@ -292,37 +292,37 @@ invocation_response dio_handler(invocation_request const& request) {
                 int carrerIndex = run_ann_dio_careers(careerSurveyAnswers);
                 string carrerName;
                 switch (carrerIndex) {
-                    case 1:
+                    case 0:
                         carrerName = "Carreira Back-end";
                         break;
-                    case 2:
+                    case 1:
                         carrerName = "Carreira Front-end";
                         break;
-                    case 3:
+                    case 2:
                         carrerName = "Carreira Mobile";
                         break;
-                    case 4:
+                    case 3:
                         carrerName = "Carreira Infra, DevOps e Security";
                         break;
-                    case 5:
+                    case 4:
                         carrerName = "Carreira Cloud";
                         break;
-                    case 6:
+                    case 5:
                         carrerName = "Carreira Data e Analytics";
                         break;
-                    case 7:
+                    case 6:
                         carrerName = "Carreira Games";
                         break;
-                    case 8:
+                    case 7:
                         carrerName = "Carreira Qualidade de Software";
                         break;
-                    case 9:
+                    case 8:
                         carrerName = "Carreira Web3 e IA";
                         break;
-                    case 10:
+                    case 9:
                         carrerName = "Carreira Liderança e SoftSkill";
                         break;
-                    case 11:
+                    case 10:
                         carrerName = "Carreira CRM";
                         break;
                     default:

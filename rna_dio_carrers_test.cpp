@@ -250,37 +250,37 @@ int run_ann_dio_careers(string input) {
 int main() {
     int carrerIndex = run_ann_dio_careers("1134512341111555");
     switch (carrerIndex) {
-        case 1:
+        case 0:
             cout << "[OK] Carreira Back-end";
             break;
-        case 2:
+        case 1:
             cout << "[OK] Carreira Front-end";
             break;
-        case 3:
+        case 2:
             cout << "[OK] Carreira Mobile";
             break;
-        case 4:
+        case 3:
             cout << "[OK] Carreira Infra, DevOps e Security";
             break;
-        case 5:
+        case 4:
             cout << "[OK] Carreira Cloud";
             break;
-        case 6:
+        case 5:
             cout << "[OK] Carreira Data e Analytics";
             break;
-        case 7:
+        case 6:
             cout << "[OK] Carreira Games";
             break;
-        case 8:
+        case 7:
             cout << "[OK] Carreira Qualidade de Software";
             break;
-        case 9:
+        case 8:
             cout << "[OK] Carreira Web3 e IA";
             break;
-        case 10:
+        case 9:
             cout << "[OK] Carreira Lideranca e SoftSkill";
             break;
-        case 11:
+        case 10:
             cout << "[OK] Carreira CRM";
             break;
         default:
