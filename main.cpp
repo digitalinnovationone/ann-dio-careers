@@ -252,10 +252,10 @@ int run_ann_dio_careers(string input) {
 	return calculate_sgn();
 }
 
-invocation_response create_success_response(int carrerId, string carrerName) {
+invocation_response create_success_response(int carrerIndex, string carrerName) {
 
     JsonValue carrer, resp;
-    carrer.WithInteger("id", carrerId).WithString("name", carrerName);
+    carrer.WithInteger("id", carrerIndex + 1).WithString("name", carrerName);
     resp.WithInteger("status", 200).WithObject("carrer", carrer);
 
     return invocation_response::success(resp.View().WriteCompact(), "application/json");
