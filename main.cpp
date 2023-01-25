@@ -252,10 +252,57 @@ int run_ann_dio_careers(string input) {
 	return calculate_sgn();
 }
 
-invocation_response create_success_response(int carrerIndex, string carrerName) {
+int run_ann_alternative() {
+    // Comeca atribuindo o i­ndice de maior valor ao "primeiro" elemento lido.
+    int maxIndex = 0;
+    int maxValue = answers[0];
+    
+    // Itera de i = 0 até i = 15 (atribuido acima)
+    for (int i = 0; i < NUM_INPUTS; i++) {
+        // No caso do valor do vetor ser maior na posicao i do que na posicao de maximo anterior, 
+        // Substitui o i­ndice do maximo pelo i­ndice i e o valor do maximo pelo valor do vetor no i­ndice i.
+        if (answers[i] > maxValue) {
+            maxIndex = i;
+            maxValue = answers[i];
+        }
+    }
+    // Mapeia o indice com o valor máximo com sua respectiva Carreira:
+    switch (maxIndex) {
+        case 3:
+        case 4:
+            return 0;  // Back-end index
+        case 0:
+        case 1:
+        case 2:
+            return 1;  // Front-end index
+        case 7:
+            return 2;  // Mobile index
+        case 8:
+            return 3;  // Infra index
+        case 9:
+            return 4;  // Cloud index
+        case 5:
+        case 6:
+        case 10:
+            return 5;  // Data & Analytics index
+        case 15:
+            return 6;  // Games index
+        case 11:
+            return 7;  // QA index
+        case 12:
+            return 8;  // Web & IA index
+        case 13:
+            return 9;  // Lideranca index
+        case 14:
+            return 10; // CRM index
+    }
+    return -1;
+}
+
+invocation_response create_success_response(int carrerIndex, string carrerName, bool isAnn) {
 
     JsonValue carrer, resp;
-    carrer.WithInteger("id", carrerIndex + 1).WithString("name", carrerName);
+    carrer.WithInteger("id", carrerIndex + 1).WithString("name", carrerName).WithBool("isAnn", isAnn);
     resp.WithInteger("status", 200).WithObject("carrer", carrer);
 
     return invocation_response::success(resp.View().WriteCompact(), "application/json");
@@ -288,8 +335,13 @@ invocation_response dio_handler(invocation_request const& request) {
             string careerSurveyAnswers = hasInput ? body_v.GetString("answers") : "";
             
             if (careerSurveyAnswers.size() == NUM_INPUTS) {
-
+                bool isAnn = true;
                 int carrerIndex = run_ann_dio_careers(careerSurveyAnswers);
+                cout << "[ANN_DIO_CARRERS]: '" << careerSurveyAnswers << "' => " << carrerIndex;
+                if (carrerIndex == -1) {
+                    carrerIndex = run_ann_alternative();
+                    isAnn = false;
+                }
                 string carrerName;
                 switch (carrerIndex) {
                     case 0:
@@ -326,10 +378,9 @@ invocation_response dio_handler(invocation_request const& request) {
                         carrerName = "Carreira CRM";
                         break;
                     default:
-						cout << "[ANN_DIO_CARRERS]: Carrer Match Warning - " << careerSurveyAnswers;
                         return create_error_response("Não identificamos uma carreira ideal pra você. Responda novamente deixando suas preferências mais claras 😉");
                 }
-                return create_success_response(carrerIndex, carrerName);
+                return create_success_response(carrerIndex, carrerName, isAnn);
             } else {
                 Aws::SimpleStringStream ss;
                 ss << "Número de entradas inválido, " << NUM_INPUTS << " posições são necessárias.";
