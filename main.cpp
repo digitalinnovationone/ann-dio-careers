@@ -227,16 +227,16 @@ void calculate_sums() {
 }
 
 int calculate_sgn() {
-	int carrerIndex = -1;
+	int careerIndex = -1;
 	for(unsigned i = 0; i < sums.size(); i++){
 		if(sums[i] < 0) {
 			results.push_back(-1);
 		} else {
 			results.push_back(1);
-			carrerIndex = i;
+			careerIndex = i;
 		}
 	}
-	return carrerIndex;
+	return careerIndex;
 }
 
 int run_ann_dio_careers(string input) {
@@ -299,11 +299,11 @@ int run_ann_alternative() {
     return -1;
 }
 
-invocation_response create_success_response(int carrerIndex, string carrerName, bool isAnn) {
+invocation_response create_success_response(int careerIndex, string careerName, bool isAnn) {
 
-    JsonValue carrer, resp;
-    carrer.WithInteger("id", carrerIndex + 1).WithString("name", carrerName).WithBool("isAnn", isAnn);
-    resp.WithInteger("status", 200).WithObject("carrer", carrer);
+    JsonValue career, resp;
+    career.WithInteger("id", careerIndex + 1).WithString("name", careerName).WithBool("isAnn", isAnn);
+    resp.WithInteger("status", 200).WithObject("career", career);
 
     return invocation_response::success(resp.View().WriteCompact(), "application/json");
 }
@@ -336,51 +336,51 @@ invocation_response dio_handler(invocation_request const& request) {
             
             if (careerSurveyAnswers.size() == NUM_INPUTS) {
                 bool isAnn = true;
-                int carrerIndex = run_ann_dio_careers(careerSurveyAnswers);
-                cout << "[ANN_DIO_CARRERS]: '" << careerSurveyAnswers << "' => " << carrerIndex;
-                if (carrerIndex == -1) {
-                    carrerIndex = run_ann_alternative();
+                int careerIndex = run_ann_dio_careers(careerSurveyAnswers);
+                cout << "[ANN_DIO_careerS]: '" << careerSurveyAnswers << "' => " << careerIndex;
+                if (careerIndex == -1) {
+                    careerIndex = run_ann_alternative();
                     isAnn = false;
                 }
-                string carrerName;
-                switch (carrerIndex) {
+                string careerName;
+                switch (careerIndex) {
                     case 0:
-                        carrerName = "Carreira Back-end";
+                        careerName = "Carreira Back-end";
                         break;
                     case 1:
-                        carrerName = "Carreira Front-end";
+                        careerName = "Carreira Front-end";
                         break;
                     case 2:
-                        carrerName = "Carreira Mobile";
+                        careerName = "Carreira Mobile";
                         break;
                     case 3:
-                        carrerName = "Carreira Infra, DevOps e Security";
+                        careerName = "Carreira Infra, DevOps e Security";
                         break;
                     case 4:
-                        carrerName = "Carreira Cloud";
+                        careerName = "Carreira Cloud";
                         break;
                     case 5:
-                        carrerName = "Carreira Data e Analytics";
+                        careerName = "Carreira Data e Analytics";
                         break;
                     case 6:
-                        carrerName = "Carreira Games";
+                        careerName = "Carreira Games";
                         break;
                     case 7:
-                        carrerName = "Carreira Qualidade de Software";
+                        careerName = "Carreira Qualidade de Software";
                         break;
                     case 8:
-                        carrerName = "Carreira Web3 e IA";
+                        careerName = "Carreira Web3 e IA";
                         break;
                     case 9:
-                        carrerName = "Carreira Liderança e SoftSkill";
+                        careerName = "Carreira Liderança e SoftSkill";
                         break;
                     case 10:
-                        carrerName = "Carreira CRM";
+                        careerName = "Carreira CRM";
                         break;
                     default:
                         return create_error_response("Não identificamos uma carreira ideal pra você. Responda novamente deixando suas preferências mais claras 😉");
                 }
-                return create_success_response(carrerIndex, carrerName, isAnn);
+                return create_success_response(careerIndex, careerName, isAnn);
             } else {
                 Aws::SimpleStringStream ss;
                 ss << "Número de entradas inválido, " << NUM_INPUTS << " posições são necessárias.";
